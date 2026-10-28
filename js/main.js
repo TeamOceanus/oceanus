@@ -1,36 +1,48 @@
-$(document).ready(function(){
-  
-  
+document.addEventListener('DOMContentLoaded', function(){
+
+
   //------------------------------------//
   //Navbar//
   //------------------------------------//
-    	var menu = $('.navbar');
-    	$(window).bind('scroll', function(e){
-    		if($(window).scrollTop() > 140){
-    			if(!menu.hasClass('open')){
-    				menu.addClass('open');
-    			}
-    		}else{
-    			if(menu.hasClass('open')){
-    				menu.removeClass('open');
-    			}
-    		}
-    	});
-  
-  
+    	var menu = document.querySelector('.navbar');
+    	function updateMenu(){
+    		menu.classList.toggle('open', window.scrollY > 140);
+    	}
+    	window.addEventListener('scroll', updateMenu, { passive: true });
+    	updateMenu();
+
+
+  //------------------------------------//
+  //Navbar Collapse (mobile)//
+  //------------------------------------//
+  document.querySelectorAll('[data-toggle="collapse"]').forEach(function(button){
+  	button.addEventListener('click', function(){
+  		var target = document.querySelector(button.getAttribute('data-target'));
+  		if(target){
+  			target.classList.toggle('in');
+  		}
+  	});
+  });
+
+
   //------------------------------------//
   //Scroll To//
   //------------------------------------//
-  $(".scroll").click(function(event){		
-  	event.preventDefault();
-  	$('html,body').animate({scrollTop:$(this.hash).offset().top}, 800);
-  	
+  document.querySelectorAll('.scroll').forEach(function(link){
+  	link.addEventListener('click', function(event){
+  		var target = link.hash && document.querySelector(link.hash);
+  		if(!target){
+  			return;
+  		}
+  		event.preventDefault();
+  		target.scrollIntoView({ behavior: 'smooth' });
+  	});
   });
-  
+
   //------------------------------------//
   //Wow Animation//
-  //------------------------------------// 
-  wow = new WOW(
+  //------------------------------------//
+  var wow = new WOW(
         {
           boxClass:     'wow',      // animated element css class (default is wow)
           animateClass: 'animated', // animation css class (default is animated)
@@ -41,5 +53,5 @@ $(document).ready(function(){
       wow.init();
 
 
-	
+
 });
